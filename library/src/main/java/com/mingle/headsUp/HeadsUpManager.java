@@ -2,7 +2,6 @@ package com.mingle.headsUp;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 
@@ -12,14 +11,16 @@ import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by zzz40500 on 2014/10/9.
  */
-public class HeadsUpManager implements Comparator<HeadsUp> {
+public class HeadsUpManager  {
 
     private  WindowManager wmOne;
     private FloatView floatView;
@@ -48,7 +49,7 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
     private HeadsUpManager(Context context) {
         this.context = context;
         map = new HashMap<Integer, HeadsUp>();
-        msgQueue = new PriorityQueue<HeadsUp>(1, this);
+        msgQueue = new LinkedList<HeadsUp>();
         wmOne = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
 
@@ -58,17 +59,21 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
     public synchronized void notify(HeadsUp headsUp) {
 
 
+
+
+
+
         if (map.containsKey(headsUp.getCode())) {
             msgQueue.remove(map.get(headsUp.getCode()));
         }
         map.put(headsUp.getCode(), headsUp);
         msgQueue.add(headsUp);
+
         if (!isPolling) {
             poll();
         }
     }
     public synchronized void notify(int code,HeadsUp headsUp) {
-
         headsUp.setCode(code);
         notify(headsUp);
 
@@ -83,7 +88,6 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
     private synchronized void poll() {
         if (!msgQueue.isEmpty()) {
             HeadsUp headsUp = msgQueue.poll();
-
             map.remove(headsUp.getCode());
             isPolling = true;
             show(headsUp);
@@ -97,7 +101,6 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
 
         floatView = new FloatView(context, 20);
 
-        floatView.setEntity(headsUp);
         WindowManager.LayoutParams params = FloatView.winParams;
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -115,9 +118,7 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
         a.setDuration(600);
         a.start();
         floatView.setNotification(headsUp);
-
         if(headsUp.getNotification()!=null){
-
             notificationManager.notify(headsUp.getCode(), headsUp.getNotification());
         }
 
@@ -125,6 +126,16 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
     }
 
 
+
+    public void cancel(){
+
+        if(floatView !=null && floatView.getParent()!=null) {
+
+            floatView.cancel();
+        }
+
+
+    }
 
     protected void dismiss() {
 
@@ -140,7 +151,7 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
 
     }
 
-    public  void  animDismiss(){
+    protected   void  animDismiss(){
 
         if(floatView !=null && floatView.getParent()!=null){
 
@@ -157,6 +168,8 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
 
                 @Override
                 public void onAnimationEnd(Animator animator) {
+
+
                     dismiss();
                 }
 
@@ -179,10 +192,17 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
     public  void  animDismiss(HeadsUp headsUp){
 
 
-           if( floatView.getHeadsUp().getCode()==headsUp.getCode()){
+           if(floatView.getHeadsUp().getCode()==headsUp.getCode()){
                animDismiss();
            }
 
+    }
+
+
+    protected  void silencerNotify(HeadsUp headsUp){
+        if(headsUp.getSilencerNotification()!=null){
+            notificationManager.notify(headsUp.getCode(), headsUp.getSilencerNotification());
+        }
     }
 
     public void cancel(int code) {
@@ -196,10 +216,7 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
 
     }
 
-    @Override
-    public int compare(HeadsUp headsUp1, HeadsUp headsUp2) {
-        return headsUp1.getPriority().getPriority() - headsUp2.getPriority().getPriority();
-    }
+
 
     public void close() {
         cleanAll();
@@ -209,7 +226,7 @@ public class HeadsUpManager implements Comparator<HeadsUp> {
 
     public void cleanAll() {
         msgQueue.clear();
-        if (floatView.getParent()!=null) {
+        if (floatView!=null && floatView.getParent()!=null) {
             animDismiss();
         }
     }

@@ -1,11 +1,11 @@
 package com.mingle.headsUp;
 
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,11 +17,13 @@ import android.widget.TextView;
 import com.example.administrator.ll.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ *
+ */
 public class FloatView extends LinearLayout {
     public static int i = 0;
     private View defaultView;
@@ -39,9 +41,6 @@ public class FloatView extends LinearLayout {
 
     private ScrollOrientationEnum scrollOrientationEnum=ScrollOrientationEnum.NONE;
 
-
-
-
     public static WindowManager.LayoutParams winParams = new WindowManager.LayoutParams();
 
     public FloatView(final Context context, int i) {
@@ -51,10 +50,7 @@ public class FloatView extends LinearLayout {
         rootView = (LinearLayout) view.findViewById(R.id.rootView);
         addView(view);
         viewWidth = context.getResources().getDisplayMetrics().widthPixels;
-
         originalLeft = 0;
-
-
     }
 
     public void setCustomView(View view) {
@@ -69,14 +65,9 @@ public class FloatView extends LinearLayout {
 
 
     private HeadsUp headsUp;
-
     private long cutDown;
-
-
     private   Handler mHandle=null;
-
     private CutDownTime cutDownTime;
-
     private class CutDownTime extends Thread{
 
         @Override
@@ -101,28 +92,7 @@ public class FloatView extends LinearLayout {
         }
     };
 
-    public void setNotification(final HeadsUp headsUp) {
 
-        this.headsUp = headsUp;
-
-
-
-
-        mHandle= new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-
-
-                HeadsUpManager.getInstant(getContext()).animDismiss(headsUp);
-            }
-        };
-
-
-        cutDownTime=  new CutDownTime();
-        cutDownTime.start();
-
-    }
 
     public HeadsUp getHeadsUp() {
         return headsUp;
@@ -154,7 +124,6 @@ public class FloatView extends LinearLayout {
                         }
 
 
-
                         break;
 
                     case HORIZONTAL:
@@ -165,9 +134,7 @@ public class FloatView extends LinearLayout {
                     case VERTICAL:
 
                         if(startY-rawY>20) {
-                            HeadsUpManager.getInstant(getContext()).animDismiss();
-                            cutDownTime.interrupt();
-                            cutDown = -1;
+                           cancel();
                         }
 
                         break;
@@ -280,11 +247,23 @@ public class FloatView extends LinearLayout {
         wm.updateViewLayout(this, winParams);
     }
 
+    public void setNotification(final HeadsUp headsUp) {
+
+        this.headsUp = headsUp;
+
+        mHandle= new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                HeadsUpManager.getInstant(getContext()).silencerNotify(headsUp);
+                HeadsUpManager.getInstant(getContext()).animDismiss(headsUp);
+            }
+        };
 
 
-
-    public void setEntity(HeadsUp headsUp) {
-
+        cutDownTime=  new CutDownTime();
+        cutDownTime.start();
 
         cutDown= headsUp.getDuration();
 
@@ -296,15 +275,90 @@ public class FloatView extends LinearLayout {
             TextView titleTV = (TextView) defaultView.findViewById(R.id.titleTV);
             TextView timeTV = (TextView) defaultView.findViewById(R.id.timeTV);
             TextView messageTV = (TextView) defaultView.findViewById(R.id.messageTV);
-            imageView.setImageDrawable(headsUp.getIcon());
+            imageView.setImageResource(headsUp.getIcon());
             titleTV.setText(headsUp.getTitleStr());
             messageTV.setText(headsUp.getMsgStr());
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
             timeTV.setText( simpleDateFormat.format(new Date()));
+            if(headsUp.isExpand()  && headsUp.getActions().size()>0){
+
+                defaultView.findViewById(R.id.menuL).setVisibility(VISIBLE);
+                defaultView.findViewById(R.id.line).setVisibility(VISIBLE);
+
+                defaultView.findViewById(R.id.menu1).setVisibility(VISIBLE);
+                ImageView imageView1= (ImageView) defaultView.findViewById(R.id.menuIM1);
+                ImageView imageView2= (ImageView) defaultView.findViewById(R.id.menuIM2);
+                ImageView imageView3= (ImageView) defaultView.findViewById(R.id.menuIM3);
+                TextView text1= (TextView) defaultView.findViewById(R.id.menuText1);
+                TextView text2= (TextView) defaultView.findViewById(R.id.menuText2);
+                TextView text3= (TextView) defaultView.findViewById(R.id.menuText3);
+                imageView1.setImageResource(headsUp.getActions().get(0).getIcon());
+                text1.setText(headsUp.getActions().get(0).getTitle());
+
+                defaultView.findViewById(R.id.menu1).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            headsUp.getActions().get(0).getIntent().send();
+                            cancel();
+                        } catch (PendingIntent.CanceledException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                if(headsUp.getActions().size()>1){
+
+                    defaultView.findViewById(R.id.menu2).setVisibility(VISIBLE);
+
+                    imageView2.setImageResource(headsUp.getActions().get(1).getIcon());
+                    text2.setText(headsUp.getActions().get(1).getTitle());
+                    defaultView.findViewById(R.id.menu2).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                headsUp.getActions().get(1).getIntent().send();
+                                cancel();
+                            } catch (PendingIntent.CanceledException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+                if(headsUp.getActions().size()>2){
+
+                    defaultView.findViewById(R.id.menu3).setVisibility(VISIBLE);
+                    imageView3.setImageResource(headsUp.getActions().get(2).getIcon());
+                    text3.setText(headsUp.getActions().get(2).getTitle());
+                    defaultView.findViewById(R.id.menu3).setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                headsUp.getActions().get(2).getIntent().send();
+                                cancel();
+                            } catch (PendingIntent.CanceledException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                }
+            }
+
         } else {
             setCustomView(headsUp.getCustomView());
         }
+
     }
+
+
+    public void cancel(){
+        HeadsUpManager.getInstant(getContext()).animDismiss();
+        cutDown = -1;
+        cutDownTime.interrupt();
+    }
+
 
 
     enum ScrollOrientationEnum {

@@ -3,22 +3,32 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 <LinearLayout
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="12dp"
+
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
+
     android:text="这是一个自定义的 HeadUp"
         android:layout_width="fill_parent"
+        android:textColor="@color/gray"
+        android:paddingLeft="20dp"
         android:layout_height="wrap_content" />
 
     <TextView
     android:text="来自 zzz40500"
         android:layout_width="fill_parent"
+        android:textColor="@color/gray"
+        android:paddingLeft="20dp"
         android:layout_height="wrap_content" />
 
     <TextView
     android:text="邮箱: wyh405003836@126.com"
         android:layout_width="fill_parent"
+        android:textColor="@color/gray"
+        android:paddingLeft="20dp"
         android:layout_height="60dp" />
     <Button
         android:text="open source"

@@ -1,10 +1,10 @@
 package com.mingle.headsupdemo;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,26 +22,38 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.l0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new Intent(MainActivity.this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
+                HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
+                HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
+                builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentText("你有新的消息");
+
+                HeadsUp headsUp = builder.buildHeadUp();
+                manage.notify(code++, headsUp);
+
+
+            }
+        });
 
         findViewById(R.id.l1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
-                builder.setSmallIcon(R.drawable.ic_launcher);
-                builder.setContentTitle("标题");
-                builder.setContentText("通知内容: message");
-                Notification notification = builder
-                        .build();
+                PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new Intent(MainActivity.this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
                 HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
+                HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
+                builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        .setSmallIcon(R.drawable.icon)
+                        .setContentText("你有新的消息")
+                        .setUsesChronometer(true)
+                        .addAction(R.drawable.ic_cloud_queue_black_24dp, "查看", pendingIntent);
 
-
-                HeadsUp headsUp = new HeadsUp(MainActivity.this);
-                headsUp.setNotification(notification);
-                headsUp.setTitle("标题");
-                headsUp.setMessage("通知内容: message");
-                headsUp.setIcon(R.drawable.ic_launcher);
+                HeadsUp headsUp = builder.buildHeadUp();
                 manage.notify(code++, headsUp);
 
 
@@ -51,18 +63,8 @@ public class MainActivity extends ActionBarActivity {
         findViewById(R.id.l2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotificationCompat.Builder builder1 = new NotificationCompat.Builder(MainActivity.this);
-                builder1.setSmallIcon(R.drawable.ic_launcher);
-                builder1.setContentTitle("标题");
-                builder1.setContentText("这个是自定义通知");
-                Notification notification1 = builder1
-                        .build();
 
                 final HeadsUpManager manage1 = HeadsUpManager.getInstant(getApplication());
-                HeadsUp headsUp1 = new HeadsUp(MainActivity.this);
-                headsUp1.setNotification(notification1);
-
-                headsUp1.setIcon(R.drawable.ic_launcher);
 
                 View view=getLayoutInflater().inflate(R.layout.custom_notification, null);
 
@@ -72,9 +74,14 @@ public class MainActivity extends ActionBarActivity {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/zzz40500/HeadsUp"));
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         MainActivity.this.startActivity(intent);
-                        manage1.animDismiss();
+                        manage1.cancel();
                     }
                 });
+
+                HeadsUp headsUp1 = new HeadsUp.Builder(MainActivity.this)
+                        .setContentTitle("标题").setSmallIcon(R.drawable.icon)
+                        .setContentText("这个是自定义通知")
+                        .buildHeadUp();
                 headsUp1.setCustomView(view);
                 manage1.notify(code++, headsUp1);
 

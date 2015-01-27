@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:layout_marginTop="6dp"
-        android:layout_toLeftOf="@+id/time"
+        android:layout_toLeftOf="@+id/timeTV"
         android:layout_toRightOf="@+id/iconIM"
         android:text="title"
         android:textColor="@android:color/black"
@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/titleTV"
+        android:paddingRight="2dp"
         android:text="19:00"
         android:textColor="@color/gray" />
 
@@ -45,4 +46,97 @@
         android:text="message"
         android:textColor="@color/gray"
         android:textSize="14dp" />
+    <View
+        android:id="@+id/line"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:background="@color/gray"
+        android:visibility="gone"
+        android:layout_below="@+id/iconIM"
+        android:layout_toRightOf="@+id/iconIM"
+        android:layout_height="1px"></View>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/line"
+        android:id="@+id/menuL"
+        android:visibility="gone"
+        android:layout_toRightOf="@+id/iconIM"
+        android:orientation="horizontal"
+        android:layout_height="48dp">
+        <LinearLayout
+            android:layout_weight="1"
+            android:id="@+id/menu1"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bg_transparency_to_grey"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="48dp"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:id="@+id/menuIM1"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_launcher"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="1212"
+                android:textSize="18dp"
+                android:id="@+id/menuText1"
+                android:duplicateParentState="true"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/menu2"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bg_transparency_to_grey"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/menuIM2"
+                android:layout_width="48dp"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_launcher"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="1212"
+
+                android:id="@+id/menuText2"
+                android:textSize="18dp"
+                android:duplicateParentState="true"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:id="@+id/menu3"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:background="@drawable/bg_transparency_to_grey"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="48dp"
+                android:padding="6dp"
+                android:scaleType="centerInside"
+                android:id="@+id/menuIM3"
+                android:duplicateParentState="true"
+                android:src="@drawable/ic_launcher"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="1212"
+                android:id="@+id/menuText3"
+                android:textSize="18dp"
+                android:duplicateParentState="true"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+        </LinearLayout>
 </RelativeLayout>
