@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+    android:text="这是一个自定义的 HeadUp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+    android:text="来自 zzz40500"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+    android:text="邮箱: wyh405003836@126.com"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp" />
+    <Button
+        android:text="open source"
+        android:id="@+id/openSource"
+        android:background="@drawable/butto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+
+
+</LinearLayout>
+    </RelativeLayout>
