@@ -292,14 +292,14 @@ public class FloatView extends LinearLayout {
                 TextView text1= (TextView) defaultView.findViewById(R.id.menuText1);
                 TextView text2= (TextView) defaultView.findViewById(R.id.menuText2);
                 TextView text3= (TextView) defaultView.findViewById(R.id.menuText3);
-                imageView1.setImageResource(headsUp.getActions().get(0).getIcon());
-                text1.setText(headsUp.getActions().get(0).getTitle());
+                imageView1.setImageResource(headsUp.getActions().get(0).icon);
+                text1.setText(headsUp.getActions().get(0).title);
 
                 defaultView.findViewById(R.id.menu1).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
-                            headsUp.getActions().get(0).getIntent().send();
+                            headsUp.getActions().get(0).actionIntent.send();
                             cancel();
                         } catch (PendingIntent.CanceledException e) {
                             e.printStackTrace();
@@ -311,13 +311,13 @@ public class FloatView extends LinearLayout {
 
                     defaultView.findViewById(R.id.menu2).setVisibility(VISIBLE);
 
-                    imageView2.setImageResource(headsUp.getActions().get(1).getIcon());
-                    text2.setText(headsUp.getActions().get(1).getTitle());
+                    imageView2.setImageResource(headsUp.getActions().get(1).icon);
+                    text2.setText(headsUp.getActions().get(1).title);
                     defaultView.findViewById(R.id.menu2).setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                                headsUp.getActions().get(1).getIntent().send();
+                                headsUp.getActions().get(1).actionIntent.send();
                                 cancel();
                             } catch (PendingIntent.CanceledException e) {
                                 e.printStackTrace();
@@ -329,13 +329,13 @@ public class FloatView extends LinearLayout {
                 if(headsUp.getActions().size()>2){
 
                     defaultView.findViewById(R.id.menu3).setVisibility(VISIBLE);
-                    imageView3.setImageResource(headsUp.getActions().get(2).getIcon());
-                    text3.setText(headsUp.getActions().get(2).getTitle());
+                    imageView3.setImageResource(headsUp.getActions().get(2).icon);
+                    text3.setText(headsUp.getActions().get(2).title);
                     defaultView.findViewById(R.id.menu3).setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                                headsUp.getActions().get(2).getIntent().send();
+                                headsUp.getActions().get(2).actionIntent.send();
                                 cancel();
                             } catch (PendingIntent.CanceledException e) {
                                 e.printStackTrace();

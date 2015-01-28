@@ -4,11 +4,15 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
+import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by zzz40500 on 2014/10/9.
@@ -19,15 +23,13 @@ public class HeadsUp   {
     /**
      * 出现时间  单位是 second
      */
-    private long duration= 7;
+    private long duration= 8;
     /**
      *
      */
     private Notification notification;
 
-
-
-
+    private Builder builder;
     /**
      *
      */
@@ -37,18 +39,13 @@ public class HeadsUp   {
      * 间隔时间
      */
     private long interval=600 ;
-
-
     private int code;
-
-    private List<Action> actions;
-
+    private List<NotificationCompat.Action> actions;
     private CharSequence titleStr;
     private CharSequence msgStr;
     private int icon;
     private View customView;
     private boolean isExpand;
-    private HeadsUp.Builder  builder;
     private HeadsUp(Context context) {
         this.context=context;
     }
@@ -60,8 +57,8 @@ public class HeadsUp   {
     public static class Builder  extends  NotificationCompat.Builder {
 
         private Context context;
-        private List<Action> actions=new ArrayList<Action>();
-        private     HeadsUp headsUp;
+        private List<NotificationCompat.Action> actions=new ArrayList<NotificationCompat.Action>();
+        private HeadsUp headsUp;
 
         public Builder(Context context) {
             super(context);
@@ -100,12 +97,12 @@ public class HeadsUp   {
 
 
 
+
+
+
         @Override
         public Builder addAction(int icon, CharSequence title, PendingIntent intent) {
-            Action  action=new HeadsUp.Action();
-            action.setIcon(icon);
-            action.setTitle(title);
-            action.setIntent(intent);
+            NotificationCompat.Action action=new NotificationCompat.Action(icon, title, intent);
             actions.add(action);
             super.addAction(icon, title, intent);
             return this;
@@ -117,7 +114,7 @@ public class HeadsUp   {
         public HeadsUp buildHeadUp(){
             headsUp.setNotification(this.build());
             headsUp.setActions(actions);
-            headsUp.setSilencerNotification(silencerNotifcation());
+            headsUp.setBuilder(this);
             return  headsUp;
         }
 
@@ -125,6 +122,13 @@ public class HeadsUp   {
             super.setSmallIcon(headsUp.getIcon());
             setDefaults(0);
             return this.build();
+        }
+
+        @Override
+        public Builder setSmallIcon(int icon, int level) {
+            setSmallIcon(icon);
+
+            return this;
         }
 
         @Override
@@ -178,43 +182,180 @@ public class HeadsUp   {
             return this;
         }
 
+        @Override
+        public Builder setWhen(long when) {
+             super.setWhen(when);
+            return this;
+        }
+
+        @Override
+        public Builder setShowWhen(boolean show) {
+             super.setShowWhen(show);
+            return this;
+        }
+
+
+
+        @Override
+        public Builder setSubText(CharSequence text) {
+             super.setSubText(text);
+            return this;
+        }
+
+        @Override
+        public Builder setNumber(int number) {
+             super.setNumber(number);
+            return  this;
+        }
+
+        @Override
+        public Builder setContentInfo(CharSequence info) {
+             super.setContentInfo(info);
+            return this;
+        }
+
+        @Override
+        public Builder setProgress(int max, int progress, boolean indeterminate) {
+             super.setProgress(max, progress, indeterminate);
+            return this;
+        }
+
+        @Override
+        public Builder setContent(RemoteViews views) {
+             super.setContent(views);
+            return this;
+        }
+
+        @Override
+        public Builder setContentIntent(PendingIntent intent) {
+             super.setContentIntent(intent);
+            return this;
+        }
+
+        @Override
+        public Builder setDeleteIntent(PendingIntent intent) {
+             super.setDeleteIntent(intent);
+            return this;
+        }
+
+        @Override
+        public Builder setTicker(CharSequence tickerText) {
+             super.setTicker(tickerText);
+            return this;
+        }
+
+        @Override
+        public Builder setTicker(CharSequence tickerText, RemoteViews views) {
+             super.setTicker(tickerText, views);
+            return this;
+        }
+
+        @Override
+        public Builder setSound(Uri sound) {
+            super.setSound(sound);
+            return this;
+        }
+
+        @Override
+        public Builder setSound(Uri sound, int streamType) {
+             super.setSound(sound, streamType);
+            return this;
+        }
+
+        @Override
+        public Builder setOnlyAlertOnce(boolean onlyAlertOnce) {
+             super.setOnlyAlertOnce(onlyAlertOnce);
+            return this;
+        }
+
+        @Override
+        public Builder setLocalOnly(boolean b) {
+             super.setLocalOnly(b);
+            return this;
+        }
+
+        @Override
+        public Builder setCategory(String category) {
+             super.setCategory(category);
+            return this;
+        }
+
+        @Override
+        public Builder setPriority(int pri) {
+             super.setPriority(pri);
+            return  this;
+        }
+
+        @Override
+        public Builder addPerson(String uri) {
+             super.addPerson(uri);
+            return  this;
+        }
+
+        @Override
+        public Builder setGroup(String groupKey) {
+             super.setGroup(groupKey);
+            return this;
+        }
+
+        @Override
+        public Builder setGroupSummary(boolean isGroupSummary) {
+             super.setGroupSummary(isGroupSummary);
+            return this;
+        }
+
+        @Override
+        public Builder setSortKey(String sortKey) {
+             super.setSortKey(sortKey);
+            return  this;
+        }
+
+        @Override
+        public Builder addExtras(Bundle extras) {
+             super.addExtras(extras);
+            return this;
+        }
+
+        @Override
+        public Builder setExtras(Bundle extras) {
+             super.setExtras(extras);
+            return this;
+        }
+
+        @Override
+        public Builder addAction(NotificationCompat.Action action) {
+            actions.add(action);
+             super.addAction(action);
+            return this;
+        }
+
+        @Override
+        public Builder setStyle(NotificationCompat.Style style) {
+             super.setStyle(style);
+            return  this;
+        }
+
+        @Override
+        public Builder setVisibility(int visibility) {
+             super.setVisibility(visibility);
+            return this;
+        }
+
+        @Override
+        public Builder setPublicVersion(Notification n) {
+             super.setPublicVersion(n);
+            return this;
+        }
+
+
     }
 
 
 
 
-    protected  static class  Action{
-        private  int icon;
-        private CharSequence title;
-        private  PendingIntent intent;
-
-        public int getIcon() {
-            return icon;
-        }
-
-        public void setIcon(int icon) {
-            this.icon = icon;
-        }
-
-        public CharSequence getTitle() {
-            return title;
-        }
-
-        public void setTitle(CharSequence title) {
-            this.title = title;
-        }
-
-        public PendingIntent getIntent() {
-            return intent;
-        }
-
-        public void setIntent(PendingIntent intent) {
-            this.intent = intent;
-        }
-    }
 
 
-    public void setIcon(int dRes) {
+    protected void setIcon(int dRes) {
         icon = dRes;
     }
 
@@ -224,7 +365,7 @@ public class HeadsUp   {
      *
      * @param titleStr
      */
-    public void setTitle(CharSequence titleStr) {
+    protected void setTitle(CharSequence titleStr) {
         this.titleStr = titleStr;
     }
 
@@ -233,14 +374,11 @@ public class HeadsUp   {
      *
      * @param msgStr
      */
-    public void setMessage(CharSequence msgStr) {
+    protected void setMessage(CharSequence msgStr) {
         this.msgStr = msgStr;
     }
 
 
-    public void dismiss(){
-        HeadsUpManager.getInstant(context).dismiss();
-    }
 
     public Context getContext() {
         return context;
@@ -258,7 +396,7 @@ public class HeadsUp   {
 
 
 
-    public CharSequence getTitleStr() {
+   public CharSequence getTitleStr() {
         return titleStr;
     }
 
@@ -275,25 +413,13 @@ public class HeadsUp   {
     }
 
 
-    public enum Priority {
-        PRIORITY_NORMAL(2) , PRIORITY_LOW(3), PRIORITY_HEIGHT(1);
-        int priority;
-         private  Priority(int i){
-          priority=i;
-      }
-
-        public int  getPriority(){
-            return priority;
-        }
-
-    }
 
 
     public Notification getNotification() {
         return notification;
     }
 
-    public void setNotification(Notification notification) {
+    protected void setNotification(Notification notification) {
         this.notification = notification;
     }
 
@@ -310,32 +436,37 @@ public class HeadsUp   {
         return code;
     }
 
-    public void setCode(int code) {
+    protected void setCode(int code) {
         this.code = code;
     }
 
-    public List<Action> getActions() {
+    protected List<NotificationCompat.Action> getActions() {
         return actions;
     }
 
-    public void setActions(List<Action> actions) {
+    protected void setActions(List<NotificationCompat.Action> actions) {
         this.actions = actions;
     }
 
-    public boolean isExpand() {
+    protected boolean isExpand() {
         return isExpand;
     }
 
-    public void setExpand(boolean isExpand) {
+    protected void setExpand(boolean isExpand) {
         this.isExpand = isExpand;
     }
 
     protected Notification getSilencerNotification() {
-        return silencerNotification;
+        return getBuilder().silencerNotifcation();
     }
 
-    private void setSilencerNotification(Notification silencerNotification) {
-        this.silencerNotification = silencerNotification;
+
+
+    private Builder getBuilder() {
+        return builder;
     }
 
+    private void setBuilder(Builder builder) {
+        this.builder = builder;
+    }
 }

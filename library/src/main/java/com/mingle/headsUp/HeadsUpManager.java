@@ -189,7 +189,7 @@ public class HeadsUpManager  {
 
     }
 
-    public  void  animDismiss(HeadsUp headsUp){
+    protected  void  animDismiss(HeadsUp headsUp){
 
 
            if(floatView.getHeadsUp().getCode()==headsUp.getCode()){

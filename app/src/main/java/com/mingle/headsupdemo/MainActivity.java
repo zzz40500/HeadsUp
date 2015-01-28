@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
                 HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                         .setSmallIcon(R.drawable.icon)
+                        .setContentIntent(pendingIntent)
                         .setContentText("你有新的消息");
 
                 HeadsUp headsUp = builder.buildHeadUp();
@@ -50,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
                         .setSmallIcon(R.drawable.icon)
                         .setContentText("你有新的消息")
+                        .setContentIntent(pendingIntent)
                         .setUsesChronometer(true)
                         .addAction(R.drawable.ic_cloud_queue_black_24dp, "查看", pendingIntent);
 
@@ -63,6 +65,8 @@ public class MainActivity extends ActionBarActivity {
         findViewById(R.id.l2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new Intent(MainActivity.this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
 
                 final HeadsUpManager manage1 = HeadsUpManager.getInstant(getApplication());
 
@@ -80,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
 
                 HeadsUp headsUp1 = new HeadsUp.Builder(MainActivity.this)
                         .setContentTitle("标题").setSmallIcon(R.drawable.icon)
+//                        .setContentIntent(pendingIntent)
                         .setContentText("这个是自定义通知")
                         .buildHeadUp();
                 headsUp1.setCustomView(view);
