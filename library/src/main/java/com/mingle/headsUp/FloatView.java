@@ -151,6 +151,19 @@ public class FloatView extends LinearLayout {
             case MotionEvent.ACTION_UP:
 
 
+
+                if(scrollOrientationEnum==ScrollOrientationEnum.NONE){
+                    if(headsUp.getNotification().contentIntent!=null){
+
+                        try {
+                            headsUp.getNotification().contentIntent.send();
+                            cancel();
+                        } catch (PendingIntent.CanceledException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }else
+
                 if (preLeft < -viewWidth / 4.0) {
                     //右滑消失
                     ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, -viewWidth);
@@ -280,6 +293,7 @@ public class FloatView extends LinearLayout {
             messageTV.setText(headsUp.getMsgStr());
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("HH:mm");
             timeTV.setText( simpleDateFormat.format(new Date()));
+
             if(headsUp.isExpand()  && headsUp.getActions().size()>0){
 
                 defaultView.findViewById(R.id.menuL).setVisibility(VISIBLE);
