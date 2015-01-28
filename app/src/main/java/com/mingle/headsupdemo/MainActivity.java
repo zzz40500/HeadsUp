@@ -30,7 +30,9 @@ public class MainActivity extends ActionBarActivity {
                 HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
                 HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        //要显示通知栏通知,这个一定要设置
                         .setSmallIcon(R.drawable.icon)
+                        //2.3 一定要设置这个参数,负责会报错
                         .setContentIntent(pendingIntent)
                         .setContentText("你有新的消息");
 
@@ -49,9 +51,12 @@ public class MainActivity extends ActionBarActivity {
                 HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
                 HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                       //要显示通知栏通知,这个一定要设置
                         .setSmallIcon(R.drawable.icon)
                         .setContentText("你有新的消息")
+                       //2.3 一定要设置这个参数,负责会报错
                         .setContentIntent(pendingIntent)
+                        //设置是否显示 action 按键
                         .setUsesChronometer(true)
                         .addAction(R.drawable.ic_cloud_queue_black_24dp, "查看", pendingIntent);
 
@@ -83,8 +88,11 @@ public class MainActivity extends ActionBarActivity {
                 });
 
                 HeadsUp headsUp1 = new HeadsUp.Builder(MainActivity.this)
-                        .setContentTitle("标题").setSmallIcon(R.drawable.icon)
-//                        .setContentIntent(pendingIntent)
+                        .setContentTitle("标题")
+                        //要显示通知栏通知,这个一定要设置
+                        .setSmallIcon(R.drawable.icon)
+                        //2.3 一定要设置这个参数,负责会报错
+                        .setContentIntent(pendingIntent)
                         .setContentText("这个是自定义通知")
                         .buildHeadUp();
                 headsUp1.setCustomView(view);
