@@ -1,5 +1,5 @@
 
-#2.0 使用库实现类似的方法#
+#2.0 使用库实现类似的方法(向下兼容2.3)#
 下面介绍一个自己写的,类似 Heads-up 组件的库.
 [github 源码地址](https://github.com/zzz40500/HeadsUp)
 simple heads-up (no expand)
@@ -8,21 +8,27 @@ simple heads-up (no expand)
     HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
                 HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        //要显示通知栏通知,这个一定要设置
                         .setSmallIcon(R.drawable.icon)
+                        //2.3 一定要设置这个参数,负责会报错
+                        .setContentIntent(pendingIntent)
                         .setContentText("你有新的消息");
 
                 HeadsUp headsUp = builder.buildHeadUp();
                 manage.notify(code++, headsUp);
 ~~~
-simple heads-up
+simple heads-up 
 使用方法:
 ~~~
-PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new Intent(MainActivity.this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
-                HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
+    HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
                 HeadsUp.Builder builder = new HeadsUp.Builder(MainActivity.this);
                 builder.setContentTitle("提醒").setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                       //要显示通知栏通知,这个一定要设置
                         .setSmallIcon(R.drawable.icon)
                         .setContentText("你有新的消息")
+                       //2.3 一定要设置这个参数,负责会报错
+                        .setContentIntent(pendingIntent)
+                        //设置是否显示 action 按键
                         .setUsesChronometer(true)
                         .addAction(R.drawable.ic_cloud_queue_black_24dp, "查看", pendingIntent);
 
@@ -48,7 +54,11 @@ PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new I
                 });
 
                 HeadsUp headsUp1 = new HeadsUp.Builder(MainActivity.this)
-                        .setContentTitle("标题").setSmallIcon(R.drawable.icon)
+                        .setContentTitle("标题")
+                        //要显示通知栏通知,这个一定要设置
+                        .setSmallIcon(R.drawable.icon)
+                        //2.3 一定要设置这个参数,负责会报错
+                        .setContentIntent(pendingIntent)
                         .setContentText("这个是自定义通知")
                         .buildHeadUp();
                 headsUp1.setCustomView(view);
@@ -62,5 +72,4 @@ heads-up 没有加入阴影效果:
 1.你可以在替换drawable 下的notification_bg这个资源文件.
 2.你可以在 notification_bg.xml 布局文件中使用 CardView 为根组件
 没有对消息进行优先级排序,现在的排序算法是先进先出.
-
-
+miui 系统开启悬浮窗才可以正常使用. (miui 真讨厌!!!!)
