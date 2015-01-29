@@ -173,7 +173,7 @@ private int pointerId;
                 }else{
                     float preAlpha=1-Math.abs(preLeft)/validWidth;
                     preAlpha=preAlpha>=0?preAlpha:0;
-                    translationX(preLeft,validWidth+10,preAlpha,0);
+                    translationX(preLeft, validWidth + 10, preAlpha, 0);
                 }
                 preLeft = 0;
                 scrollOrientationEnum=ScrollOrientationEnum.NONE;
@@ -229,7 +229,12 @@ private int pointerId;
                     HeadsUpManager.getInstant(getContext()).dismiss();
                     cutDown=-1;
                     velocityTracker.clear();
-                    velocityTracker.recycle();
+                    try {
+                        velocityTracker.recycle();
+                    }catch (IllegalStateException e){
+
+                    }
+
                 }
             }
 
