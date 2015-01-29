@@ -360,12 +360,20 @@ private int pointerId;
     }
 
 
-    public void cancel(){
+    protected void cancel(){
         HeadsUpManager.getInstant(getContext()).animDismiss();
         cutDown = -1;
         cutDownTime.interrupt();
-        velocityTracker.clear();
-        velocityTracker.recycle();
+
+
+        if(velocityTracker!=null) {
+            try {
+                velocityTracker.clear();
+                velocityTracker.recycle();
+            } catch (IllegalStateException e) {
+
+            }
+        }
     }
 
 
