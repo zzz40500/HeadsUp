@@ -360,9 +360,6 @@ public class HeadsUp   {
 
 
 
-
-
-
     protected void setIcon(int dRes) {
         icon = dRes;
     }
