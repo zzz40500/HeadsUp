@@ -30,6 +30,9 @@ public class HeadsUp   {
     private Notification notification;
 
     private Builder builder;
+
+    private boolean isSticky=false;
+
     /**
      *
      */
@@ -96,6 +99,11 @@ public class HeadsUp   {
         }
 
 
+
+        public Builder setSticky(boolean isSticky){
+            headsUp.setSticky(isSticky);
+            return this;
+        }
 
 
 
@@ -468,5 +476,14 @@ public class HeadsUp   {
 
     private void setBuilder(Builder builder) {
         this.builder = builder;
+    }
+
+
+    public boolean isSticky() {
+        return isSticky;
+    }
+
+    public void setSticky(boolean isSticky) {
+        this.isSticky = isSticky;
     }
 }

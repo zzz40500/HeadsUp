@@ -1,142 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/iconIM"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="12dp"
-        android:src="@drawable/ic_launcher" />
+    android:layout_height="fill_parent">
 
 
-    <TextView
-        android:id="@+id/titleTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="6dp"
-        android:layout_toLeftOf="@+id/timeTV"
-        android:layout_toRightOf="@+id/iconIM"
-        android:text="title"
-        android:textColor="@android:color/black"
-        android:textSize="16dp" />
-
-    <TextView
-        android:id="@+id/timeTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/titleTV"
-        android:paddingRight="2dp"
-        android:text="19:00"
-        android:textColor="@color/gray" />
-
-
-    <TextView
-        android:id="@+id/messageTV"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTV"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/iconIM"
-        android:maxLines="2"
-        android:text="message"
-        android:textColor="@color/gray"
-        android:textSize="14dp" />
-    <View
-        android:id="@+id/line"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:background="@color/gray"
-        android:visibility="gone"
-        android:layout_below="@+id/iconIM"
-        android:layout_toRightOf="@+id/iconIM"
-        android:layout_height="1px"></View>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/line"
-        android:id="@+id/menuL"
-        android:visibility="gone"
-        android:layout_toRightOf="@+id/iconIM"
-        android:orientation="horizontal"
-        android:layout_height="48dp">
-        <LinearLayout
-            android:layout_weight="1"
-            android:id="@+id/menu1"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:background="@drawable/bg_transparency_to_grey"
-            android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="48dp"
-                android:padding="6dp"
-                android:scaleType="centerInside"
-                android:id="@+id/menuIM1"
-                android:duplicateParentState="true"
-                android:src="@drawable/ic_launcher"
-                android:layout_height="wrap_content" />
+                android:id="@+id/iconIM"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_launcher" />
             <TextView
-                android:text="1212"
-                android:textSize="18dp"
-                android:id="@+id/menuText1"
-                android:duplicateParentState="true"
-                android:layout_gravity="center"
+                android:id="@+id/titleTV"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            </LinearLayout>
-        <LinearLayout
-            android:id="@+id/menu2"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:background="@drawable/bg_transparency_to_grey"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/menuIM2"
-                android:layout_width="48dp"
-                android:padding="6dp"
-                android:scaleType="centerInside"
-                android:duplicateParentState="true"
-                android:src="@drawable/ic_launcher"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="1212"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_toLeftOf="@+id/timeTV"
+                android:layout_toRightOf="@+id/iconIM"
+                android:text="title"
+                android:textColor="@android:color/black"
+                android:textSize="16dp" />
 
-                android:id="@+id/menuText2"
-                android:textSize="18dp"
-                android:duplicateParentState="true"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:id="@+id/menu3"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:background="@drawable/bg_transparency_to_grey"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="48dp"
-                android:padding="6dp"
-                android:scaleType="centerInside"
-                android:id="@+id/menuIM3"
-                android:duplicateParentState="true"
-                android:src="@drawable/ic_launcher"
-                android:layout_height="wrap_content" />
             <TextView
-                android:text="1212"
-                android:id="@+id/menuText3"
-                android:textSize="18dp"
-                android:duplicateParentState="true"
-                android:layout_gravity="center"
+                android:id="@+id/timeTV"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/titleTV"
+                android:paddingRight="2dp"
+                android:text="19:00"
+                android:textColor="@color/gray" />
 
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/messageTV"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleTV"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/iconIM"
+                android:maxLines="2"
+                android:text="message"
+                android:textColor="@color/gray"
+                android:textSize="14dp" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="wrap_content"
+                android:layout_height="1px"
+                android:layout_below="@+id/iconIM"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/iconIM"
+                android:background="@color/gray"
+                android:visibility="gone"></View>
+
+            <LinearLayout
+                android:id="@+id/menuL"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/line"
+                android:layout_toRightOf="@+id/iconIM"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/menu1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_transparency_to_grey"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/menuIM1"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:duplicateParentState="true"
+                        android:padding="6dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/menuText1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:duplicateParentState="true"
+                        android:text="1212"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_transparency_to_grey"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/menuIM2"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:duplicateParentState="true"
+                        android:padding="6dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/menuText2"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:duplicateParentState="true"
+                        android:text="1212"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_transparency_to_grey"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/menuIM3"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:duplicateParentState="true"
+                        android:padding="6dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_launcher" />
+
+                    <TextView
+                        android:id="@+id/menuText3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:duplicateParentState="true"
+                        android:text="1212"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 </RelativeLayout>

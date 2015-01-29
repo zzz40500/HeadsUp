@@ -4,8 +4,8 @@
     android:id="@+id/rootView"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/notification_bg"
     android:paddingLeft="9dp"
+    android:background="@drawable/notification_bg3"
     android:paddingRight="9dp"
     android:orientation="vertical">
 

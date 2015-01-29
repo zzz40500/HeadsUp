@@ -3,21 +3,21 @@ package com.mingle.headsUp;
 
 import android.app.PendingIntent;
 import android.content.Context;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.administrator.ll.R;
 import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,19 +25,20 @@ import java.util.Date;
  *
  */
 public class FloatView extends LinearLayout {
-    public static int i = 0;
-    private View defaultView;
+
+
+
     private float rawX = 0;
     private float rawY=0;
     private float touchX = 0;
     private float startY = 0;
-
-    private WindowManager wm = (WindowManager) getContext().getApplicationContext()
-            .getSystemService(getContext().WINDOW_SERVICE);
     public LinearLayout rootView;
     public int originalLeft;
     public int viewWidth;
-    private CountDownTimer countDownTimer;
+    private float validWidth;
+    private VelocityTracker velocityTracker;
+    private  int maxVelocity;
+    private Distance distance;
 
     private ScrollOrientationEnum scrollOrientationEnum=ScrollOrientationEnum.NONE;
 
@@ -46,11 +47,13 @@ public class FloatView extends LinearLayout {
     public FloatView(final Context context, int i) {
         super(context);
         LinearLayout view = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.notification_bg, null);
-
+        maxVelocity= ViewConfiguration.get(context).getScaledMaximumFlingVelocity();
         rootView = (LinearLayout) view.findViewById(R.id.rootView);
         addView(view);
         viewWidth = context.getResources().getDisplayMetrics().widthPixels;
+        validWidth=viewWidth/2.0f;
         originalLeft = 0;
+        distance=new Distance(context);
     }
 
     public void setCustomView(View view) {
@@ -98,23 +101,21 @@ public class FloatView extends LinearLayout {
         return headsUp;
     }
 
-    private long startTime;
-
+private int pointerId;
     public boolean onTouchEvent(MotionEvent event) {
         rawX = event.getRawX();
         rawY=event.getRawY();
+        acquireVelocityTracker(event);
         cutDown= headsUp.getDuration();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 touchX = event.getX();
                 startY = event.getRawY();
-                startTime = System.currentTimeMillis();
+                pointerId=event.getPointerId(0);
                 break;
             case MotionEvent.ACTION_MOVE:
-
                 switch (scrollOrientationEnum){
                     case NONE:
-
                         if(Math.abs((rawX - touchX))>20) {
                             scrollOrientationEnum=ScrollOrientationEnum.HORIZONTAL;
 
@@ -123,35 +124,22 @@ public class FloatView extends LinearLayout {
 
                         }
 
-
                         break;
-
                     case HORIZONTAL:
-
                         updatePosition((int) (rawX - touchX));
                         break;
-
                     case VERTICAL:
-
                         if(startY-rawY>20) {
                            cancel();
                         }
-
                         break;
-
                 }
-
-
-
-
-
-
 
                 break;
             case MotionEvent.ACTION_UP:
-
-
-
+                velocityTracker.computeCurrentVelocity(1000,maxVelocity);
+                int velocity= (int) velocityTracker.getYVelocity(pointerId);
+                double dis=distance.getSplineFlingDistance(velocity);
                 if(scrollOrientationEnum==ScrollOrientationEnum.NONE){
                     if(headsUp.getNotification().contentIntent!=null){
 
@@ -162,102 +150,98 @@ public class FloatView extends LinearLayout {
                             e.printStackTrace();
                         }
                     }
-                }else
-
-                if (preLeft < -viewWidth / 4.0) {
-                    //右滑消失
-                    ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, -viewWidth);
-                    a.start();
-                    a.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animator) {
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
-                            HeadsUpManager.getInstant(getContext()).dismiss();
-                            cutDown=-1;
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animator) {
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animator) {
-                        }
-                    });
+                    break;
+                }
 
 
-                } else if (preLeft > originalLeft) {
+                int toX;
+                if(preLeft>0){
+                    toX= (int) (preLeft+Math.abs(dis));
+                }else{
+                    toX= (int) (preLeft-Math.abs(dis));
+                }
 
-                    double d = (preLeft - originalLeft) * Math.max(3 - (System.currentTimeMillis() - startTime) / 1000.0, 1);
-                    if (d >= viewWidth / 2) {
-                        ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, viewWidth);
-                        a.addListener(new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animator) {
+                if (toX < -validWidth) {
+                    float preAlpha=1-Math.abs(preLeft)/validWidth;
+                    preAlpha=preAlpha>=0?preAlpha:0;
+                    translationX(preLeft,validWidth+10,preAlpha,0);
+                } else if (toX < validWidth) {
+                    float preAlpha=1-Math.abs(preLeft)/validWidth;
+                    preAlpha=preAlpha>=0?preAlpha:0;
+                    translationX(preLeft,0,preAlpha,1);
 
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-                                HeadsUpManager.getInstant(getContext()).dismiss();
-                                cutDown=-1;
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animator) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animator) {
-
-                            }
-                        });
-
-                        a.start();
-                    } else {
-                        updatePosition(originalLeft);
-                        ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, 0);
-                        a.start();
-                        scrollOrientationEnum=ScrollOrientationEnum.NONE;
-
-                    }
-
-                } else if (preLeft < originalLeft) {
-                    updatePosition(originalLeft);
-                    ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, 0);
-                    a.start();
-                    scrollOrientationEnum=ScrollOrientationEnum.NONE;
-
+                }else{
+                    float preAlpha=1-Math.abs(preLeft)/validWidth;
+                    preAlpha=preAlpha>=0?preAlpha:0;
+                    translationX(preLeft,validWidth+10,preAlpha,0);
                 }
                 preLeft = 0;
-
+                scrollOrientationEnum=ScrollOrientationEnum.NONE;
                 break;
-
         }
 
         return super.onTouchEvent(event);
 
+    }
+    /**
+     *
+     * @param event 向VelocityTracker添加MotionEvent
+     *
+     * @see android.view.VelocityTracker#obtain()
+     * @see android.view.VelocityTracker#addMovement(MotionEvent)
+     */
+    private void acquireVelocityTracker( MotionEvent event) {
+        if(null == velocityTracker) {
+            velocityTracker = VelocityTracker.obtain();
+        }
+        velocityTracker.addMovement(event);
     }
 
 
     private int preLeft;
 
     public void updatePosition(int left) {
-        winParams.x = left;
-        winParams.y = 0;
-        if (left < 0) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft, left);
-            a.start();
-        } else if (left > originalLeft) {
-            ObjectAnimator a = ObjectAnimator.ofFloat(rootView, "translationX", preLeft - originalLeft, left - originalLeft);
-            a.start();
-        }
+
+            float preAlpha=1-Math.abs(preLeft)/validWidth;
+            float leftAlpha=1-Math.abs(left)/validWidth;
+            preAlpha = preAlpha>=0 ? preAlpha : 0;
+            leftAlpha = leftAlpha>=0 ? leftAlpha : 0;
+            translationX(preLeft,left,preAlpha,leftAlpha);
+
         preLeft = left;
-        wm.updateViewLayout(this, winParams);
+    }
+
+
+
+    public void translationX(float fromX,float toX,float formAlpha, final float toAlpha  ){
+        ObjectAnimator a1=ObjectAnimator.ofFloat(rootView,"alpha",formAlpha,toAlpha);
+        ObjectAnimator a2 = ObjectAnimator.ofFloat(rootView, "translationX", fromX, toX);
+        AnimatorSet animatorSet=new AnimatorSet();
+        animatorSet.playTogether(a1,a2);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(toAlpha==0){
+                    HeadsUpManager.getInstant(getContext()).dismiss();
+                    cutDown=-1;
+                    velocityTracker.clear();
+                    velocityTracker.recycle();
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        animatorSet.start();
     }
 
     public void setNotification(final HeadsUp headsUp) {
@@ -268,21 +252,25 @@ public class FloatView extends LinearLayout {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-
                 HeadsUpManager.getInstant(getContext()).silencerNotify(headsUp);
                 HeadsUpManager.getInstant(getContext()).animDismiss(headsUp);
             }
         };
 
 
+
         cutDownTime=  new CutDownTime();
-        cutDownTime.start();
+
+        if(!headsUp.isSticky()){
+            cutDownTime.start();
+        }
+
 
         cutDown= headsUp.getDuration();
 
         if (headsUp.getCustomView() == null) {
 
-            defaultView = LayoutInflater.from(getContext()).inflate(R.layout.notification, null);
+            View defaultView = LayoutInflater.from(getContext()).inflate(R.layout.notification, rootView, false);
             rootView.addView(defaultView);
             ImageView imageView = (ImageView) defaultView.findViewById(R.id.iconIM);
             TextView titleTV = (TextView) defaultView.findViewById(R.id.titleTV);
@@ -371,7 +359,10 @@ public class FloatView extends LinearLayout {
         HeadsUpManager.getInstant(getContext()).animDismiss();
         cutDown = -1;
         cutDownTime.interrupt();
+        velocityTracker.clear();
+        velocityTracker.recycle();
     }
+
 
 
 

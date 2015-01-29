@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.mingle.headsUp.HeadsUp;
 import com.mingle.headsUp.HeadsUpManager;
@@ -18,6 +19,8 @@ public class MainActivity extends ActionBarActivity {
 
 
     private int code=1;
+
+    private ScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,8 @@ public class MainActivity extends ActionBarActivity {
         findViewById(R.id.l0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                 PendingIntent pendingIntent=PendingIntent.getActivity(MainActivity.this,11,new Intent(MainActivity.this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
                 HeadsUpManager manage = HeadsUpManager.getInstant(getApplication());
@@ -34,9 +39,11 @@ public class MainActivity extends ActionBarActivity {
                         .setSmallIcon(R.drawable.icon)
                         //2.3 一定要设置这个参数,负责会报错
                         .setContentIntent(pendingIntent)
+
                         .setContentText("你有新的消息");
 
                 HeadsUp headsUp = builder.buildHeadUp();
+                headsUp.setSticky(true);
                 manage.notify(code++, headsUp);
 
 

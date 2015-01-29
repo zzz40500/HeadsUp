@@ -59,10 +59,6 @@ public class HeadsUpManager  {
     public synchronized void notify(HeadsUp headsUp) {
 
 
-
-
-
-
         if (map.containsKey(headsUp.getCode())) {
             msgQueue.remove(map.get(headsUp.getCode()));
         }
@@ -209,7 +205,6 @@ public class HeadsUpManager  {
         if (map.containsKey(code)) {
             msgQueue.remove(map.get(code));
         }
-
         if(floatView.getHeadsUp().getCode()==code){
             animDismiss();
         }
