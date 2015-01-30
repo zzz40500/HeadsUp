@@ -20,7 +20,20 @@ public class MainActivity extends ActionBarActivity {
 
     private int code=1;
 
-    private ScrollView scrollView;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
                         .addAction(R.drawable.ic_cloud_queue_black_24dp, "查看", pendingIntent);
 
                 HeadsUp headsUp = builder.buildHeadUp();
-                manage.notify(code++, headsUp);
+                manage.notify(1, headsUp);
 
 
             }
@@ -112,7 +125,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                HeadsUpManager.getInstant(MainActivity.this).cleanAll();
+                HeadsUpManager.getInstant(MainActivity.this).cancelAll();
+
 
             }
         });

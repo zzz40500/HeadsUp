@@ -227,12 +227,15 @@ private int pointerId;
             public void onAnimationEnd(Animator animation) {
                 if(toAlpha==0){
                     HeadsUpManager.getInstant(getContext()).dismiss();
-                    cutDown=-1;
-                    velocityTracker.clear();
-                    try {
-                        velocityTracker.recycle();
-                    }catch (IllegalStateException e){
 
+                    cutDown=-1;
+                    if(velocityTracker!=null) {
+                        velocityTracker.clear();
+                        try {
+                            velocityTracker.recycle();
+                        } catch (IllegalStateException e) {
+
+                        }
                     }
 
                 }

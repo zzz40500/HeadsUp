@@ -77,7 +77,8 @@ public class HeadsUpManager  {
 
 
     public synchronized void cancel(HeadsUp headsUp) {
-        msgQueue.remove(headsUp);
+
+        cancel(headsUp.getCode());
     }
 
 
@@ -205,7 +206,7 @@ public class HeadsUpManager  {
         if (map.containsKey(code)) {
             msgQueue.remove(map.get(code));
         }
-        if(floatView.getHeadsUp().getCode()==code){
+        if(floatView!=null && floatView.getHeadsUp().getCode()==code){
             animDismiss();
         }
 
@@ -214,12 +215,12 @@ public class HeadsUpManager  {
 
 
     public void close() {
-        cleanAll();
+        cancelAll();
         manager = null;
     }
 
 
-    public void cleanAll() {
+    public void cancelAll() {
         msgQueue.clear();
         if (floatView!=null && floatView.getParent()!=null) {
             animDismiss();
