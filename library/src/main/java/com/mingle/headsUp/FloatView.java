@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -138,8 +139,7 @@ private int pointerId;
                 break;
             case MotionEvent.ACTION_UP:
                 velocityTracker.computeCurrentVelocity(1000,maxVelocity);
-                int velocity= (int) velocityTracker.getYVelocity(pointerId);
-                double dis=distance.getSplineFlingDistance(velocity);
+                int dis= (int) velocityTracker.getYVelocity(pointerId);
                 if(scrollOrientationEnum==ScrollOrientationEnum.NONE){
                     if(headsUp.getNotification().contentIntent!=null){
 
@@ -160,12 +160,12 @@ private int pointerId;
                 }else{
                     toX= (int) (preLeft-Math.abs(dis));
                 }
-
-                if (toX < -validWidth) {
+                Log.e("toX","  "+toX);
+                if (toX <= -validWidth) {
                     float preAlpha=1-Math.abs(preLeft)/validWidth;
                     preAlpha=preAlpha>=0?preAlpha:0;
-                    translationX(preLeft,validWidth+10,preAlpha,0);
-                } else if (toX < validWidth) {
+                    translationX(preLeft,-(validWidth+10),preAlpha,0);
+                } else if (toX <= validWidth) {
                     float preAlpha=1-Math.abs(preLeft)/validWidth;
                     preAlpha=preAlpha>=0?preAlpha:0;
                     translationX(preLeft,0,preAlpha,1);
