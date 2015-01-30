@@ -1,4 +1,3 @@
-
 #2.0 使用库实现类似的方法(向下兼容2.3)#
 下面介绍一个自己写的,类似 Heads-up 组件的库.
 [github 源码地址](https://github.com/zzz40500/HeadsUp)
@@ -68,8 +67,16 @@ simple heads-up
 ![heads-up.gif](http://upload-images.jianshu.io/upload_images/166866-543a5d26ab71d0f6.gif)
 
 局限性:
-heads-up 没有加入阴影效果:
-1.你可以在替换drawable 下的notification_bg这个资源文件.
-2.你可以在 notification_bg.xml 布局文件中使用 CardView 为根组件
-没有对消息进行优先级排序,现在的排序算法是先进先出.
-miui 系统开启悬浮窗才可以正常使用. (miui 真讨厌!!!!)
+>1. ~~heads-up 没有加入阴影效果:~~
+* 没有对消息进行优先级排序,现在的排序算法是先进先出.
+* miui 系统开启悬浮窗才可以正常使用. (**miui 真讨厌!!!!**)
+
+1.0.1更新内容;
+ >增加了背景阴影部分.
+  1. 增加了消息横向滑动时候的 alpha 值的改变
+  * 增加了常驻消息:调用 HeadsUp.setSticky(true),用 HeadsUpManager.cancel(code)取消.
+  * 修改了滑动动画.
+  * 向下兼容2.3
+
+
+
