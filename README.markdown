@@ -78,5 +78,21 @@ simple heads-up
   * 修改了滑动动画.
   * 向下兼容2.3
 
+1.1.0更新内容;
+>* 增加了圆形头像,基于[CircleImageView](https://github.com/hdodenhof/CircleImageView)上做的修改
+* 增加在 android 5.0 上使用原生的 headsUp.
+增加了方法 `setActivateStatusBar(boolean )` 默认 true  ,设置 false 表示只显示 heads-up ,而不会发送到通知栏上.
+
+#####1.1.0注意:#####
+>*使用原生的 headsUp 逻辑是: 
+    系统是大于21,且headsUp 没有使用`setCustomView(View )`也没有设置`setIsActivateStatusBar(true)`则使用原生的 heads-up
+如果要调用了原生的 heads-up,所以你得设置`setFullScreenIntent(pendding,false)`pendding不能为空,否则没有效果
+
+
+
+
+
+
+
 
 
