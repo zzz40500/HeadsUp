@@ -21,7 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import com.example.administrator.ll.R;
+import com.mingle.headsUp.R;
 
 
 public class CircleImageView extends ImageView {

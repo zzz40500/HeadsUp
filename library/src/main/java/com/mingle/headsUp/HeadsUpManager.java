@@ -10,13 +10,10 @@ import android.view.WindowManager;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by zzz40500 on 2014/10/9.

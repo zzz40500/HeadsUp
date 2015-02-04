@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
-
 import java.util.ArrayList;
 import java.util.List;
 

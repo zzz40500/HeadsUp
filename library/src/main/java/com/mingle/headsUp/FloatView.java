@@ -1,11 +1,11 @@
 package com.mingle.headsUp;
 
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.administrator.ll.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -25,6 +24,7 @@ import java.util.Date;
 /**
  *
  */
+@SuppressLint("ViewConstructor")
 public class FloatView extends LinearLayout {
 
 
