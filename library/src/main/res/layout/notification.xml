@@ -4,11 +4,14 @@
     android:layout_height="fill_parent">
 
 
-            <ImageView
+            <com.mingle.headsUp.widget.CircleImageView
                 android:id="@+id/iconIM"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:padding="12dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="11dp"
+                android:paddingRight="11dp"
+                android:paddingBottom="13dp"
                 android:src="@drawable/ic_launcher" />
             <TextView
                 android:id="@+id/titleTV"

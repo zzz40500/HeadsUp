@@ -2,6 +2,7 @@ package com.mingle.headsUp;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.WindowManager;
 
@@ -86,8 +87,17 @@ public class HeadsUpManager  {
         if (!msgQueue.isEmpty()) {
             HeadsUp headsUp = msgQueue.poll();
             map.remove(headsUp.getCode());
-            isPolling = true;
-            show(headsUp);
+
+
+            if ( Build.VERSION.SDK_INT < 21   ||   headsUp.getCustomView() != null || !headsUp.isActivateStatusBar()){
+                isPolling = true;
+                show(headsUp);
+            }else {
+                //当 系统是 lollipop 以上,并且没有自定义布局以后,调用系统自己的 notification
+                isPolling = false;
+                notificationManager.notify(headsUp.getCode(),headsUp.getBuilder().setIcon(headsUp.getIcon()).build());
+
+            }
         } else {
             isPolling = false;
         }
@@ -97,7 +107,6 @@ public class HeadsUpManager  {
     private void show(HeadsUp headsUp) {
 
         floatView = new FloatView(context, 20);
-
         WindowManager.LayoutParams params = FloatView.winParams;
         params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -115,7 +124,7 @@ public class HeadsUpManager  {
         a.setDuration(600);
         a.start();
         floatView.setNotification(headsUp);
-        if(headsUp.getNotification()!=null){
+        if(headsUp.getNotification()!=null ){
             notificationManager.notify(headsUp.getCode(), headsUp.getNotification());
         }
 

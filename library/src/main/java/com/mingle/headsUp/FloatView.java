@@ -160,7 +160,6 @@ private int pointerId;
                 }else{
                     toX= (int) (preLeft-Math.abs(dis));
                 }
-                Log.e("toX","  "+toX);
                 if (toX <= -validWidth) {
                     float preAlpha=1-Math.abs(preLeft)/validWidth;
                     preAlpha=preAlpha>=0?preAlpha:0;
@@ -260,7 +259,9 @@ private int pointerId;
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                HeadsUpManager.getInstant(getContext()).silencerNotify(headsUp);
+                if(headsUp.isActivateStatusBar()) {
+                    HeadsUpManager.getInstant(getContext()).silencerNotify(headsUp);
+                }
                 HeadsUpManager.getInstant(getContext()).animDismiss(headsUp);
             }
         };

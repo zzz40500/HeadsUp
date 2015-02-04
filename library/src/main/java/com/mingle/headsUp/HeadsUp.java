@@ -23,7 +23,7 @@ public class HeadsUp   {
     /**
      * 出现时间  单位是 second
      */
-    private long duration= 8;
+    private long duration= 9;
     /**
      *
      */
@@ -32,6 +32,10 @@ public class HeadsUp   {
     private Builder builder;
 
     private boolean isSticky=false;
+
+
+    private boolean activateStatusBar=true;
+
 
     /**
      *
@@ -59,7 +63,6 @@ public class HeadsUp   {
 
     public static class Builder  extends  NotificationCompat.Builder {
 
-        private Context context;
         private List<NotificationCompat.Action> actions=new ArrayList<NotificationCompat.Action>();
         private HeadsUp headsUp;
 
@@ -97,6 +100,10 @@ public class HeadsUp   {
 //            super.setSmallIcon(icon);
             return this;
         }
+        protected   Builder setIcon(int icon){
+            super.setSmallIcon(icon);
+            return this;
+        }
 
 
 
@@ -126,7 +133,7 @@ public class HeadsUp   {
             return  headsUp;
         }
 
-        private   Notification silencerNotifcation(){
+        private   Notification silencerNotification(){
             super.setSmallIcon(headsUp.getIcon());
             setDefaults(0);
             return this.build();
@@ -462,12 +469,12 @@ public class HeadsUp   {
     }
 
     protected Notification getSilencerNotification() {
-        return getBuilder().silencerNotifcation();
+        return getBuilder().silencerNotification();
     }
 
 
 
-    private Builder getBuilder() {
+    protected Builder getBuilder() {
         return builder;
     }
 
@@ -482,5 +489,14 @@ public class HeadsUp   {
 
     public void setSticky(boolean isSticky) {
         this.isSticky = isSticky;
+    }
+
+
+    protected boolean isActivateStatusBar() {
+        return activateStatusBar;
+    }
+
+    public void setActivateStatusBar(boolean activateStatusBar) {
+        this.activateStatusBar = activateStatusBar;
     }
 }
